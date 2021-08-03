@@ -92,16 +92,19 @@ sub publish_files {
 
     my ($num_files_cell, $num_processed_cell, $num_errors_cell) = (0, 0, 0);
 
-    if ($process_type eq $OFFINSTRUMENT) {
+    if (! $self->_dir_group_writable($smrt_name) ) {
+      $self->warn('Skipping '. $self->smrt_path($smrt_name) .' as dir not writable');
+    }
+    elsif ($process_type eq $OFFINSTRUMENT) {
       ($num_files_cell, $num_processed_cell, $num_errors_cell) =
         $self->_publish_off_instrument_cell($smrt_name);
     }
     elsif ($process_type eq $ONINSTRUMENT) {
-     ($num_files_cell, $num_processed_cell, $num_errors_cell) =
-       $self->_publish_on_instrument_cell($smrt_name);
+      ($num_files_cell, $num_processed_cell, $num_errors_cell) =
+        $self->_publish_on_instrument_cell($smrt_name);
     }
     else {
-      $self->info("Skipping $smrt_name as no seq files found");
+      $self->warn('Skipping '. $self->smrt_path($smrt_name) .' as no seq files found');
     }
 
     $num_files     += $num_files_cell;
@@ -499,6 +502,15 @@ sub _read_metadata {
       ($metadata_file,$prefix);
 
   return $metadata;
+}
+
+sub _dir_group_writable {
+  my ($self, $smrt_name) = @_;
+
+  my $name  = $self->_check_smrt_name($smrt_name);
+  my $mode = (stat $self->smrt_path($name))[2];
+
+  return ($mode & 020) ? 1 : 0;
 }
 
 __PACKAGE__->meta->make_immutable;
