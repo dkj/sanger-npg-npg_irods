@@ -13,8 +13,6 @@ jobs:
 
     env:
       SINGULARITY_VERSION: "3.11.1"
-      PERL_CACHE: ~/perl5 # Perlbrew and CPAN modules installed here, cached
-      NPG_LIB: ~/perl5npg # NPG modules installed here, not cached
       WTSI_NPG_BUILD_BRANCH: ${{ github.base_ref || github.ref }}
 
     strategy:
@@ -60,6 +58,8 @@ jobs:
           echo "SINGULARITY_CACHEDIR=$HOME/.singularity-cache" >> $GITHUB_ENV
           # '~' in SINGULARITY_CACHEDIR value (from say a env: section in this YAML) is not expanded by
           # singularity so that paths used are misleading/unclear
+          echo "PERL_CACHE=$HOME/perl5" >> $GITHUB_ENV # Perlbrew and CPAN modules installed here, cached
+          echo "NPG_LIB=$HOME/perl5npg" >> $GITHUB_ENV # NPG modules installed here, not cached
 
       - uses: actions/checkout@v3
 
