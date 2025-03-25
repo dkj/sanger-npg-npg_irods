@@ -855,6 +855,8 @@ you select a different restart file for each job.
 
 Keith James <kdj@sanger.ac.uk>
 
+Marina Gourtovaia <mg8@sanger.ac.uk>
+
 =head1 COPYRIGHT AND DISCLAIMER
 
 Copyright (C) 2015, 2016, 2017, 2018, 2019, 2021 Genome Research
